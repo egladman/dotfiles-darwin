@@ -7,4 +7,4 @@ for f in *; do
     set -- "$@" "$f"
 done
 
-stow "$@"
+stow "$@" && printf '%s\n' "Success"
