@@ -22,3 +22,11 @@ cd ~/.dotfiles
 ```
 nix-env -if development.nix
 ```
+
+
+5. Fix Shortcuts to GUIs
+```sh
+for f in ~/.nix-profile/Applications/*; do
+    ln -svf "$f" ~/Applications/
+done
+```
