@@ -1,3 +1,6 @@
+# Kitty uses a custom terminfo name that breaks everything
+export TERM=xterm-256color
+
 if [[ -f '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]]; then
   source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
   export NIX_PATH="$HOME/.nix-defexpr"
@@ -23,5 +26,3 @@ fi
 if [[ -f "${HOME:?}/.bashrc" ]]; then
     source "${HOME}/.bashrc"
 fi
-
-export SHELL=bash

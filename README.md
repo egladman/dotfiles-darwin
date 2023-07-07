@@ -1,5 +1,7 @@
 # dotfiles-darwin
 
+My minimal setup on MacOS
+
 ## 1. Install Nix
 ```
 sh <(curl -L https://nixos.org/nix/install)
@@ -18,15 +20,21 @@ cd ~/.dotfiles
 ./setup.sh
 ```
 
-## 4. Install All Packages
+## 4. Install Nix Packages
 ```
 nix-env -if development.nix
 ```
 
 
-5. Fix Shortcuts to GUIs
+## 5. Fix Shortcuts to GUIs
 ```sh
 for f in ~/.nix-profile/Applications/*; do
     ln -svf "$f" ~/Applications/
 done
+```
+
+## 6. Change Default Shell
+```
+sudo echo "$HOME/.nix-profile/bin/bash" >> /etc/shells
+chsh -s "$HOME/.nix-profile/bin/bash"
 ```

@@ -2,7 +2,7 @@
 
 {
   inherit (pkgs)
-      bash
+      bashInteractive
       coreutils-full
       emacs
       gcc
