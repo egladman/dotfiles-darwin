@@ -13,7 +13,9 @@
       kitty
       meld
       nodejs
+      rectangle
       shellcheck
       starship
-      tree;
+      tree
+      vscode;
 }

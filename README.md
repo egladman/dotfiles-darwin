@@ -7,7 +7,7 @@ My minimal setup on MacOS
 sh <(curl -L https://nixos.org/nix/install)
 ```
 
-## 2. Install Dotfiles
+## 2. Clone Dotfiles
 ```
 source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix-env -iA nixpkgs.git nixpkgs.stow
@@ -22,7 +22,7 @@ cd ~/.dotfiles
 
 ## 4. Install Nix Packages
 ```
-nix-env -if development.nix
+nix-env --install --file default.nix
 ```
 
 
@@ -38,3 +38,7 @@ done
 sudo echo "$HOME/.nix-profile/bin/bash" >> /etc/shells
 chsh -s "$HOME/.nix-profile/bin/bash"
 ```
+
+## 7. Bind Capslock to Command
+
+Navigate to `System Settings` > `Keyboard` > `Keyboard Shortcuts` > `Modifier Keys`

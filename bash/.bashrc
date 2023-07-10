@@ -24,7 +24,7 @@ dc() {
 }
 
 em() {
-    local socket="${XDG_RUNTIME_DIR:?/tmp}/emacs/server"
+    local socket="${XDG_RUNTIME_DIR:-/tmp}/emacs/server"
 
     # Passing an empty string  will automatically start the daemon if its not already running
     declare -a base_argv
