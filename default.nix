@@ -9,10 +9,14 @@
       git
       go
       gnupg
+      direnv
       jq
       kitty
+      llvm
       meld
+      nix-direnv
       nodejs
+      python311
       rectangle
       shellcheck
       starship

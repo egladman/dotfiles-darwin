@@ -23,6 +23,9 @@ if [[ -d "${KREW_ROOT:-$HOME/.krew}" ]]; then
     PATH="${PATH}:${KREW_ROOT:-$HOME/.krew}/bin"
 fi
 
+eval "$(direnv hook bash)"
+
 if [[ -f "${HOME:?}/.bashrc" ]]; then
     source "${HOME}/.bashrc"
 fi
+
