@@ -16,6 +16,7 @@
       meld
       nix-direnv
       nodejs
+      postgresql
       python311
       rectangle
       shellcheck
