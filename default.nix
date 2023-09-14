@@ -19,6 +19,7 @@
       nix-direnv
       nodejs
       obsidian
+      postgresql
       python311
       rectangle
       shellcheck
