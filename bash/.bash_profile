@@ -6,6 +6,10 @@ if [[ -f '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]]; then
   export NIX_PATH="$HOME/.nix-defexpr"
 fi
 
+if [[ -d "${HOME}/.local/bin" ]]; then
+    PATH="${PATH}:${HOME}/.local/bin"
+fi
+
 export GOPATH="${HOME:?}/.go"
 if [[ -d "$GOPATH" ]]; then
     PATH="${PATH}:${GOPATH}/bin"

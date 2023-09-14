@@ -54,6 +54,8 @@
 ;; Configure vertico directory extension.
 (use-package vertico-directory
   :straight nil
+  ;; https://github.com/radian-software/straight.el/issues/819
+  :load-path "straight/build/vertico/extensions"
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
               ("RET" . vertico-directory-enter)

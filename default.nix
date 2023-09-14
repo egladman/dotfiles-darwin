@@ -2,6 +2,8 @@
 
 {
   inherit (pkgs)
+      awscli2
+      aws-vault
       bashInteractive
       coreutils-full
       emacs
@@ -16,10 +18,12 @@
       meld
       nix-direnv
       nodejs
+      obsidian
       python311
       rectangle
       shellcheck
       starship
       tree
-      vscode;
+      vscode
+      yabai;
 }
