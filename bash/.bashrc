@@ -24,16 +24,19 @@ dc() {
 }
 
 em() {
-    local socket="${XDG_RUNTIME_DIR:-/tmp}/emacs/server"
+    local base_dir="${XDG_RUNTIME_DIR:-${TMPDIR:?}}/emacs"
+    if [[ ! -d "$base_dir" ]]; then
+	mkdir -p "$base_dir"
+    fi
 
-    # Passing an empty string  will automatically start the daemon if its not already running
-    declare -a base_argv
-    base_argv=(
-	--socket-name "$socket"
-	--alternate-editor ''
+    # Passing an empty string will automatically start
+    # the daemon if its not already running
+    declare -a emacs_opts=(
+	--socket-name="${base_dir}/server"
+	--alternate-editor=''
     )
 
-    TERM=xterm-emacs emacsclient "${base_argv[@]}" "$@"
+    TERM=xterm-emacs emacsclient "${emacs_opts[@]}" "$@"
 }
 
 la() {
