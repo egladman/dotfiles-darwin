@@ -1,7 +1,12 @@
+
 source /dev/stdin <<<"$(kitty + complete setup bash)"
 
 # starship
 eval "$(starship init bash)"
+
+#############
+# traversal #
+#############
 
 cd() {
     case "$*" in
@@ -23,6 +28,27 @@ dc() {
     command cd "${OLDPWD:?}"
 }
 
+cl() {
+    command cd "$@" && ls
+}
+
+la() {
+    ls -a "$@"
+}
+
+mkcd() {
+    # Create multiple directories and cd into the first one
+    mkdir -p "$@" && command cd "!$"
+}
+
+#########
+# emacs #
+#########
+
+emacs() {
+    TERM=xterm-emacs command emacs "$@"
+}
+
 em() {
     local base_dir="${XDG_RUNTIME_DIR:-${TMPDIR:?}}/emacs"
     if [[ ! -d "$base_dir" ]]; then
@@ -39,17 +65,35 @@ em() {
     TERM=xterm-emacs emacsclient "${emacs_opts[@]}" "$@"
 }
 
-la() {
-    ls -a "$@"
+me() {
+    em --create-frame "$@"
 }
 
-mkcd() {
-    # Create multiple directories and cd into the first one
-    mkdir -p "$@" && cd "!$"
-}
+##############
+# kubernetes #
+##############
 
 k() {
     kubectl "$@"
+}
+
+kk() {
+    kubectl kustomize "$@"
+}
+
+#######
+# git #
+#######
+
+git() {
+    case "$1" in
+        'yeet')
+	    shift
+            set -- push --force "$@"
+            ;;
+    esac
+
+    command git "$@"
 }
 
 git-cherrypick() {
@@ -71,42 +115,47 @@ git-cherrypick() {
         fi
     done
 
-    git cherry-pick "${argv[@]}"
+    command git cherry-pick "${argv[@]}"
 }
 
-unpack() {
-    # Usage: unpack <file1> <file2>
-    #        unpack foobar.tar.gz
+########
+# misc #
+########
 
-    for target in "$@"; do
-        if [[ ! -f "$target" ]]; then
-            printf '%s\n' "${FUNCNAME[0]}: File '$target' does not exist"
+extract() {
+    # Usage: extract <path/to/archive1> <path/to/archive2>
+    #        extract foobar.tar.gz
+
+    for archive in "$@"; do
+        if [[ ! -e "$archive" ]]; then
+            printf '%s\n' "${FUNCNAME[0]}: File '$archive' does not exist."
             return 1
         fi
-    done
 
-    for target in "$@"; do
-        case "$target" in
+        case "${archive,,}" in
+	    *.tar)
+		tar xf "$archive"
+		;;
             *.tar.gz|*.tgz)
-                tar xzf "$target"
+                tar xzf "$archive"
                 ;;
             *.tar.bz2|*.tbz2)
-                tar xjf "$target"
+                tar xjf "$archive"
                 ;;
             *.rar)
-                unrar x "$target"
+                unrar x "$archive"
                 ;;
             *.zip)
-                unzip "$target"
+                unzip "$archive"
                 ;;
-            *.Z)
-                uncompress "$target"
+            *.z)
+                uncompress "$archive"
                 ;;
             *.7z)
-                7z x "$target"
+                7z x "$archive"
                 ;;
             *)
-                printf '%s\n' "${FUNCNAME[0]}: File '$target' has unsupported extension"
+                printf '%s\n' "${FUNCNAME[0]}: Unable to extract contents of '${archive}'. File has unsupported extension."
                 return 1
         esac
     done
