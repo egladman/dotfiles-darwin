@@ -49,7 +49,15 @@ emacs() {
     TERM=xterm-emacs command emacs "$@"
 }
 
+emacsclient() {
+    TERM=xterm-emacs command emacslient "$@"
+}
+
 em() {
+    emacs -nw "$@"
+}
+
+ec() {
     local base_dir="${XDG_RUNTIME_DIR:-${TMPDIR:?}}/emacs"
     if [[ ! -d "$base_dir" ]]; then
 	mkdir -p "$base_dir"
@@ -62,12 +70,14 @@ em() {
 	--alternate-editor=''
     )
 
-    TERM=xterm-emacs emacsclient "${emacs_opts[@]}" "$@"
+    emacsclient "${emacs_opts[@]}" "$@"
 }
 
-me() {
+ce() {
     em --create-frame "$@"
 }
+
+
 
 ##############
 # kubernetes #
