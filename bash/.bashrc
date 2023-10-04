@@ -77,8 +77,6 @@ ce() {
     em --create-frame "$@"
 }
 
-
-
 ##############
 # kubernetes #
 ##############
@@ -95,19 +93,33 @@ kk() {
 # git #
 #######
 
+g() {
+    git "$@"
+}
+
 git() {
     case "$1" in
         'yeet')
-	    shift
-            set -- push --force "$@"
+            set -- push --force origin HEAD
             ;;
+	'unfuck')
+	    set -- reset --hard origin/HEAD
+	    ;;
     esac
 
     command git "$@"
 }
 
-git-cherrypick() {
-    # Usage: git-cherrypick ebe6942..905e279 dcek8bg
+gitc() {
+    command git commit -m "$*"
+}
+
+gitp() {
+   command git push origin HEAD 
+}
+
+gitch() {
+    # Usage: gitch ebe6942..905e279 dcek8bg
 
     # Rewrites commit ranges to be inclusive of both range endpoints. By default
     # range <commit1>..<commit2> does not include the starting commit in the
