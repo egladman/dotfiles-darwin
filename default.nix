@@ -6,13 +6,17 @@
       aws-vault
       bashInteractive
       coreutils-full
+      delve
       emacs
       gcc
+      gdlv
       git
       go
+      golangci-lint
       gnupg
       direnv
       jq
+      k9s
       kitty
       llvm
       meld
