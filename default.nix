@@ -4,6 +4,7 @@
   inherit (pkgs)
       awscli2
       aws-vault
+      azure-cli
       bashInteractive
       coreutils-full
       delve
@@ -11,6 +12,7 @@
       gcc
       gdlv
       git
+      google-cloud-sdk
       go
       golangci-lint
       gnupg
