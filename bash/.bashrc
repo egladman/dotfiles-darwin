@@ -19,6 +19,9 @@ cd() {
             fi
             set -- "$path"
             ;;
+	'//')
+	    set -- ~/Repos
+	    ;;
     esac
 
     command cd "$@"
