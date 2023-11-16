@@ -7,6 +7,7 @@
       azure-cli
       bashInteractive
       coreutils-full
+      dagger
       delve
       emacs
       gcc
