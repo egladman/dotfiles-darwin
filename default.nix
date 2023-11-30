@@ -2,6 +2,7 @@
 
 {
   inherit (pkgs)
+      gawkInteractive
       awscli2
       aws-vault
       azure-cli
