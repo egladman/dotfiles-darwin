@@ -1,0 +1,70 @@
+coreutils-full
+direnv
+nix-direnv
+fzf
+gawkInteractive
+git
+gnugrep
+gnumake
+gnupg
+gnused
+ijq
+jq
+ripgrep
+starship
+tree
+yq-go
+
+# GUIs
+emacs
+kitty
+meld
+vscode
+
+# GUIs - MacOS
+rectangle
+skhd
+nixpkgs-unstable.yabai
+
+# Databases
+dblab
+postgresql
+
+# Cloud Providers
+awscli2
+aws-vault
+azure-cli
+google-cloud-sdk
+
+# Kubernetes
+kubectl
+kubernetes-helm
+kube-linter
+k9s
+
+# Containers
+skopeo
+
+# Productivity
+obsidian
+
+# Bash
+bashInteractive
+shellcheck
+
+# C/C++
+gdb
+gcc
+llvm
+
+# Golang
+delve
+gdlv
+go
+golangci-lint
+
+# Nodejs
+nodejs
+
+# Python
+python312
