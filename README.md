@@ -13,7 +13,7 @@ sh <(curl -L https://nixos.org/nix/install)
 ```
 source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix-env --install --attr nixpkgs.git nixpkgs.stow
-git clone git@github.com:egladman/dotfiles-darwin.git ~/.dotfiles
+~/.nix-profile/bin/git clone https://github.com/egladman/dotfiles-darwin.git ~/.dotfiles
 ```
 
 ## 3. Stow Dotfiles
@@ -27,10 +27,16 @@ cd ~/.dotfiles
 ./nix-helper.sh install
 ```
 
-## 5. Change Default Shell
+## 5. Add Shell
 ```
-sudo echo "$HOME/.nix-profile/bin/bash" >> /etc/shells
-chsh -s "$HOME/.nix-profile/bin/bash"
+sudo su
+echo "/Users/${SUDO_USER:?}/.nix-profile/bin/bash" >> /etc/shells
+exit
+```
+
+## 6. Change Shell
+```
+chsh -s "/Users/${USER:?}/.nix-profile/bin/bash"
 ```
 
 ## 7. Bind Capslock to Command

@@ -14,8 +14,10 @@ ripgrep
 starship
 tree
 yq-go
+_1password
 
 # GUIs
+_1password-gui
 emacs
 kitty
 meld
@@ -37,6 +39,7 @@ azure-cli
 google-cloud-sdk
 
 # Kubernetes
+kind
 kubectl
 kubernetes-helm
 kube-linter
@@ -53,7 +56,6 @@ bashInteractive
 shellcheck
 
 # C/C++
-gdb
 gcc
 llvm
 

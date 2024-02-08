@@ -3,15 +3,16 @@
 set -o errexit
 
 __NIX_PACKAGE_LIST="${__NIX_PACKAGE_LIST:-packages}"
-__NIX_PROFILE_DIR="${XDG_STATE_HOME:-${HOME}/.local/state}/nix/profiles"
+__NIX_PROFILE_DIR="${XDG_STATE_HOME:-${HOME:?}/.local/state}/nix/profiles"
+__NIX_APPLICATION_DIR="${__NIX_APPLICATION_DIR:-${HOME:?}/Applications}"
 __NIX_PROFILE_NAME="${__NIX_PROFILE_NAME:-development}"
 __NIX_PROFILE_PATH="${__NIX_PROFILE_DIR}/${__NIX_PROFILE_NAME}"
 __NIX_FORCE_INSTALL=${__NIX_FORCE_INSTALL:-0}
 
 __die() {
     printf '%s\n' "$@" >&2
-    printf '%s\n' "Dying..."
-    return 1
+    printf '%s\n' "dying..."
+    exit 1
 }
 
 __log() {
@@ -19,24 +20,28 @@ __log() {
 }
 
 __nix_update_channels() {
-    nix-channel --update
+    nix-channel --update "$1"
 }
 
 __nix_add_channels() {
     # Ensures the prerequisite nix channels are present
 
-    for chan in nixpkgs nixpkgs-unstable; do
+    for chan in nixpkgs-unstable; do
 	chan_dir="${__NIX_PROFILE_DIR}/channels/${chan}"
-
-	chan_exists=1    
-	[ ! -d "$chan_dir" ] && chan_exists=0	
 	
+        chan_exists=1
+        if [ ! -d "$chan_dir" ]; then
+            __log "channel $chan does not exist"
+            chan_exists=0
+        fi
+
         case "$chan" in
-            "nixpkgs")
-                [ $chan_exists -eq 1 ] || __die "Could not find channel '$chan'"
-                ;;
              "nixpkgs-unstable")
-                 [ $chan_exists -eq 1 ] || nix-channel --add https://nixos.org/channels/nixpkgs-unstable "$chan"
+                if [ $chan_exists -eq 0 ]; then
+                    __log "adding channel $chan"
+                    nix-channel --add https://nixos.org/channels/nixpkgs-unstable "$chan"
+                    __nix_update_channels "$chan"
+                fi
                 ;;
         esac
     done
@@ -68,7 +73,19 @@ __nix_foreach_package() {
 }
 
 __nix_install() {
-    nix-env --install --profile $__NIX_PROFILE_PATH --attr "${1:?}"
+    package="${1:?}"
+
+    is_installed=1
+    derivative="$(nix-env --query --available --attr "${1:?}")"
+
+    nix-env --query "$derivative" --installed || is_installed=0
+
+    if [ $is_installed -eq 1 -a $__NIX_FORCE_INSTALL -eq 0 ]; then
+        __log "package $1 is already installed. Set environment variable __NIX_FORCE_INSTALL=1 to forc."
+        return 0
+    fi
+
+    nix-env --install --profile $__NIX_PROFILE_PATH --attr "$1"
 }
 
 __nix_upgrade() {
@@ -81,9 +98,13 @@ __nix_switch_profile() {
 }
 
 __nix_add_shortcuts() {
-    for f in ~/.nix-profile/Applications/*; do
+    if [ ! -d "$__NIX_APPLICATION_DIR" ]; then
+        mkdir -p "$__NIX_APPLICATION_DIR"
+    fi
+
+    for f in ${HOME}/.nix-profile/Applications/*; do
         [ ! -e "$f" ] && continue
-        ln -svf "$f" ~/Applications/
+        ln -svf "$f" "${__NIX_APPLICATION_DIR}"
     done
 }
 
@@ -102,7 +123,7 @@ main() {
                 __nix_foreach_package __nix_upgrade
                 ;;
             *)
-                __die "Unrecognized command: $1"
+                __die "unrecognized command: $1"
                 ;;
         esac
         shift
