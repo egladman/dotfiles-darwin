@@ -2,7 +2,7 @@
 
 My minimal development setup on MacOS.
 
-**Disclaimer:** The way in which I use Nix is very much an anti-pattern ¯\_(ツ)_/¯
+**Disclaimer:** The way I'm using Nix (imperatively) is very much an anti-pattern.
 
 ## 1. Install Nix
 ```

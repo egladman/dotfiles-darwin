@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# A POSIX script to install/upgrade a predefined list of Nix packages on MacOS
+
 set -o errexit
 
 __NIX_PACKAGE_LIST="${__NIX_PACKAGE_LIST:-packages}"
@@ -81,7 +83,7 @@ __nix_install() {
     nix-env --query "$derivative" --installed || is_installed=0
 
     if [ $is_installed -eq 1 -a $__NIX_FORCE_INSTALL -eq 0 ]; then
-        __log "package $1 is already installed. Set environment variable __NIX_FORCE_INSTALL=1 to forc."
+        __log "package $1 already installed, to forcibly re-install set environment variable __NIX_FORCE_INSTALL=1"
         return 0
     fi
 
@@ -102,7 +104,7 @@ __nix_add_shortcuts() {
         mkdir -p "$__NIX_APPLICATION_DIR"
     fi
 
-    for f in ${HOME}/.nix-profile/Applications/*; do
+    for f in "${HOME}/.nix-profile/Applications"/*; do
         [ ! -e "$f" ] && continue
         ln -svf "$f" "${__NIX_APPLICATION_DIR}"
     done

@@ -17,11 +17,11 @@ yq-go
 _1password
 
 # GUIs
-_1password-gui
 emacs
 kitty
 meld
 vscode
+utm
 
 # GUIs - MacOS
 rectangle
@@ -46,6 +46,9 @@ kube-linter
 k9s
 
 # Containers
+nixpkgs-unstable.dive
+podman
+podman-compose
 skopeo
 
 # Productivity
