@@ -598,6 +598,33 @@ Creates a placeholder window if no files container exists."
 ;; opens a dedicated compose buffer immediately, even while the shell is
 ;; busy. Submission queues automatically.
 
+;; Make the viewport window follow streaming output.
+;;
+;; `agent-shell-viewport-view-last' ends with `(goto-char (point-min))',
+;; which defeats `shell-maker--should-auto-scroll-p' (requires point at
+;; point-max AND window-end at point-max). The result is that during
+;; streaming, new text appends below the visible region and the window
+;; never catches up.
+;;
+;; This advice moves point + window-point to point-max only when the
+;; associated shell is busy. Historical viewing still lands at point-min
+;; per upstream behavior.
+(defun my/agent-shell-viewport-follow-tail-when-busy (&rest _)
+  "After `agent-shell-viewport-view-last', glue point to point-max if busy."
+  (when (and (derived-mode-p 'agent-shell-viewport-view-mode)
+             (fboundp 'agent-shell--shell-buffer))
+    (let ((shell-buffer (ignore-errors (agent-shell--shell-buffer))))
+      (when (and shell-buffer
+                 (buffer-live-p shell-buffer)
+                 (buffer-local-value 'shell-maker--busy shell-buffer))
+        (goto-char (point-max))
+        (when-let* ((win (get-buffer-window (current-buffer) t)))
+          (set-window-point win (point-max)))))))
+
+(with-eval-after-load 'agent-shell
+  (advice-add 'agent-shell-viewport-view-last
+              :after #'my/agent-shell-viewport-follow-tail-when-busy))
+
 ;; Add agent-shell display buffer configuration
 (add-to-list 'display-buffer-alist
              '("\\*Agent-"
