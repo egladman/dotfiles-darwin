@@ -1,6 +1,4 @@
 
-source /dev/stdin <<<"$(kitty + complete setup bash)"
-
 # starship
 eval "$(starship init bash)"
 
@@ -48,16 +46,8 @@ mkcd() {
 # emacs #
 #########
 
-emacs() {
-    TERM=xterm-emacs command emacs "$@"
-}
-
-emacsclient() {
-    TERM=xterm-emacs command emacslient "$@"
-}
-
 em() {
-    emacs -nw "$@"
+    TERM=xterm-emacs emacsclient --no-window-system --create-frame --alternate-editor "" "$@"
 }
 
 ec() {

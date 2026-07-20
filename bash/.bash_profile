@@ -1,9 +1,9 @@
 # Kitty uses a custom terminfo name that breaks everything
 export TERM=xterm-256color
 
-if [[ -f '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]]; then
-  source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-  export NIX_PATH="$HOME/.nix-defexpr"
+if [[ -d "${HOME}/.asdf" ]]; then
+    source "${HOME}/.asdf/asdf.sh"
+    source "${HOME}/.asdf/completions/asdf.bash"
 fi
 
 if [[ -d "${HOME}/.local/bin" ]]; then
@@ -19,17 +19,12 @@ if [[ -d "${HOME:?}/.cargo" ]]; then
     PATH="${PATH}:${HOME}/.cargo/bin"
 fi
 
-if [[ -d "${HOME:?}/.npmpackages" ]]; then
-    PATH="${PATH}:${HOME}/.npmpackages/bin"
-fi
-
 if [[ -d "${KREW_ROOT:-$HOME/.krew}" ]]; then
     PATH="${PATH}:${KREW_ROOT:-$HOME/.krew}/bin"
 fi
-
-eval "$(direnv hook bash)"
 
 if [[ -f "${HOME:?}/.bashrc" ]]; then
     source "${HOME}/.bashrc"
 fi
 
+eval "$(mise activate bash)"

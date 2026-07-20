@@ -2,43 +2,52 @@
 
 My minimal development setup on MacOS.
 
-**Disclaimer:** The way I'm using Nix (imperatively) is very much an anti-pattern.
+## Setup
 
-## 1. Install Nix
-```
-sh <(curl -L https://nixos.org/nix/install)
-```
+1. Install [Homebrew](https://brew.sh)
 
-## 2. Clone Dotfiles
 ```
-source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-nix-env --install --attr nixpkgs.git nixpkgs.stow
-~/.nix-profile/bin/git clone https://github.com/egladman/dotfiles-darwin.git ~/.dotfiles
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## 3. Stow Dotfiles
+1. Clone dotfiles
+
+```
+git clone https://github.com/egladman/dotfiles-darwin.git ~/.dotfiles
+```
+
+1. Stow dotfiles
+
 ```
 cd ~/.dotfiles
 ./stow-helper.sh
 ```
 
-## 4. Install Nix Packages
+### Packages
+
+1. Install packages via Homebrew
+
 ```
-./nix-helper.sh install
+cd ~/.dotfiles
+brew bundle install --file=Brewfile
 ```
 
-## 5. Add Shell
+### Shell
+
+1. Add Homebrew bash to `/etc/shells`
+
 ```
 sudo su
-echo "/Users/${SUDO_USER:?}/.nix-profile/bin/bash" >> /etc/shells
+echo "/opt/homebrew/bin/bash" >> /etc/shells
 exit
 ```
 
-## 6. Change Shell
+1. Update default shell to Homebrew bash
+
 ```
-chsh -s "/Users/${USER:?}/.nix-profile/bin/bash"
+chsh -s /opt/homebrew/bin/bash
 ```
 
-## 7. Bind Capslock to Command
+## Miscellaneous
 
-Navigate to `System Settings` > `Keyboard` > `Keyboard Shortcuts` > `Modifier Keys`
+1. Bind Capslock to Command. Navigate to `System Settings` > `Keyboard` > `Keyboard Shortcuts` > `Modifier Keys`
